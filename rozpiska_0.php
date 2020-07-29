@@ -32,12 +32,11 @@ class rozpiska extends Module {
         }
         //data pre
         $form = &$this->init_module('Libs/QuickForm');
-        $form->addElement("datepicker","dateFilter","Dzień transportu", array("autocomplete" => "off"));
-        $form->addElement("submit","submit","Filtruj");
+        $form->addElement("datepicker","dateFilter","Dzień transportu", ["autocomplete" => "off", 'class' => 'form-control', 'style' => 'height:unset;width:200px;'] );
+        $form->addElement("submit", "submit", "Filtruj", ['class' => 'btn btn-primary']);
         $theme = $this->init_module('Base/Theme');
         $form->toHtml();
         $form->assign_theme('my_form', $theme);
-
 
         //form validate section
         if($form->validate()){
@@ -103,7 +102,7 @@ class rozpiska extends Module {
                     $farmer = $rboCompany->get_record($zakup['company']);
                     $opiekun = $rboContacts->get_record($farmer['account_manager']);
                     $zakup['opiekun'] = $opiekun['first_name']." ".$opiekun['last_name'];
-                    $zakup['address'] = $farmer['address_1']." ".$farmer['postal_code']." ".$farmer['city'];
+                    $zakup['address'] = $farmer['address_1'].", ".$farmer['postal_code']." ".$farmer['city'];
                     $zakup['company'] = $farmer['company_name'];
                     $zakup['grupa'] = $farmer->get_val("parent_company",false);
                     $zakup['client']  =  $farmer->get_val("company_name",false);
@@ -153,6 +152,7 @@ class rozpiska extends Module {
             $theme->assign("transportsSelect", $transportsSelect);
         }
         $theme->display();
+        load_js($this->get_module_dir(). "theme/edit.js");
         $val = $this->get_module_variable("dateFilter");
         Epesi::js("
                     jq('#dateFilter').val('$val');

@@ -1,124 +1,208 @@
-<div class='container'>
-    {$my_form_open}
-    <div style='text-align:left;margin-left:3%;'>
-        {foreach from=$my_form_data item=f}
-            {if is_array($f) && isset($f.type) && isset($f.html) && isset($f.label) && $f.type!='hidden' && $f.type!='button' && $f.type!='submit'}
-                <b>{$f.label}</b>
-                <span class='form-control-input'> {$f.html} </span>
-            {/if}
-        {/foreach}
-         <span class='form-control-btn'> {$my_form_data.submit.html} </span>
-         <h1> {$prev} Dzień: {$data.dateFilter} {$next} </h1> 
-        </div>
-    {$my_form_close}
-
-    <div style='margin-top:2%;margin-left:5%;text-align:left;'>
-    <div>
-        <select class='customSelect' id='changeTransport'>
-            {foreach from=$transportsSelect item=select}
-                <option value='{$select.id}'> {$select.name} </option>
-            {/foreach}
-
-        </select> 
-    </div>
-
-        {foreach from=$transports item=transport}
-            {if ($transport === reset($transports))}
-                <div class='transport display' id='{$transport.id}'> 
-            {else}
-                <div class='transport hidden' id='{$transport.id}'>
-            {/if}
-                 <div style='margin-top:4%;'></div>
-                 <div style='width:96%;'>
-                    <table class='zakup'>
-                        <tr>
-                            <td class='bold'> Dzień: </td>
-                            <td class='bold'> {$transport.date} </td>
-                            <td class='bold' > {$transport.day}, </td>
-                        </tr>
-                        <tr>
-                            <td class='header bold' style='color:red;'> Numer Tr. / do Kogo </td>
-                            <td class='header bold' style='color:red;'> Ilość / warunki </td>
-                            <td class='header bold' style='color:red;'> Waga rozł. / ubytek </td>
-                            <td class='header bold' style='color:red;'> Kierowca </td>
-                            <td class='header bold' style='color:red;'>Samochód </td>
-                            <td class='header bold' style='color:red;'> Km. Plan </td>
-                            <td class='header bold' style='color:red;'> Km. Rzecz </td>
-                            <td class='header bold' style='color:red;'> % </td>
-                            <td class='header bold' style='color:red;'> Koszty Tr </td>
-                            <td class='header bold' style='color:red;width:12%;'> Uwagi </td>
-                        </tr>
-                        <tr>
-                            <td class='' style='color:red;'> Ubojowy </td>
-                            <td class='' style='color:red;'> Ilość </td>
-                            <td class='' style='color:red;'> Waga załądunku </td>
-                            <td class='' style='color:red;'> Grupa / Klient numer telefonu </td>
-                            <td class='' style='color:red;'> Adres odbioru (klienta) <br> OP: Opiekun <br> DOK: VAT/RR </td>
-                            <td class='' style='color:red;'> Cena </td>
-                            <td class='' style='color:red;'> Wyliczenia </td>
-                            <td class='' style='color:red;'>  </td>
-                            <td class='' style='color:red;'>  </td>
-                            <td class='' style='color:red;width:12%;'>  </td>
-                        </tr>
-                        <tr>
-                            <td class='header bold data'> {$transport.number} </td>
-                            <td class='header bold data' > 
-                                Rozł: {$transport.iloscrozl} <br> 
-                                Warunki: {$transport.iloscwaru} <br> 
-                                Padłe: {$transport.iloscpadle} <br> 
-                            </td>
-                            <td class='header bold data'> 
-                                Waga: {$transport.weight} <br> 
-                                Ubytek: 0 <br> 
-                            </td>
-                            <td class='header bold data'> {$transport.driver_1} </td>
-                            <td class='header bold data'>  {$transport.vehicle}  </td>
-                            <td class='header bold data'>    </td>
-                            <td class='header bold data'> {$transport.kmprzej} </td>
-                            <td class='header bold data'>    </td>
-                            <td class='header bold data'>    </td>
-                            <td class='header bold data' style='width:12%;'>  {$transport.note}  </td>
-
-                        </tr>
-                        {foreach from=$transport.zakupy item=zakup}
-                            <tr>
-                                <td class='data'> {$zakup.numer_ubojowy} </td>
-                                <td  class='data'> 
-                                    Plan: {$zakup.amount} <br> 
-                                    Zał: {$zakup.sztukzal} <br> 
-                                </td>
-                                <td class='data'> 
-                                    Waga: {$zakup.weight}  <br> 
-                                    Śr waga sztuki: {$zakup.avgWeight}  <br> 
-                                </td>
-                                <td class='data'> 
-                                    <span style='color:#145214;'> GRUPA: {$zakup.grupa}  </span> <br>
-                                    <span style='color:#2385bf;'> KLIENT: {$zakup.client} </span> <br>
-                                    <span> {$zakup.kontakt} </span>
-                                </td>
-                                <td class='data'>  
-                                    {$zakup.address} <br>
-                                    {$zakup.opiekun}  <br>
-                                </td>
-                                <td class='data'>  {$zakup.price}  </td>
-                                <td class='data'>  {$zakup.kosztMiesa} </td>
-                                <td class='data'> {$zakup.deduction}%  </td>
-                                <td class='data'>  {$zakup.koszty} zł </td>
-                                <td  class='data' style='width:12%;'>  
-                                    Transport: {$zakup.noteTransport} <br> 
-                                    Handlowa: {$zakup.noteHandlowiec} <br> 
-                                    Kierowca: {$zakup.noteDriver} 
-                                </td>
-                            </tr>
+<div class="bootstrap-iso" style="font-size: 14px;">
+    <div class="container-fluid" style="padding-left: 6px; padding-right: 6px;">
+        <div class='row'>
+            <div class='col-6'>
+                <div class='form-group'>
+                    <select class='form-control' id='changeTransport' style='height:unset;width:200px;'>
+                        {foreach from=$transportsSelect item=select}
+                            <option value='{$select.id}'> {$select.name} </option>
                         {/foreach}
-                    </table>
+                    </select>
                 </div>
             </div>
-         {/foreach} 
+            <div class='col-6'>
+                <div class='form-group'>
+                    {$my_form_open}
+                    {foreach from=$my_form_data item=f}
+                        {if is_array($f) && isset($f.type) && isset($f.html) && isset($f.label) && $f.type!='hidden' && $f.type!='button' && $f.type!='submit'}
+                             {$f.html}
+                        {/if}
+                    {/foreach}
+                     {$my_form_data.submit.html}
+                    {$my_form_close}
+                </div>
+            </div>
         </div>
+        {foreach from=$transports item=transport}
+          {if ($transport === reset($transports))}
+                <div class='transport display'  id='{$transport.id}'> 
+            {else}
+               <div class='transport hidden'  id='{$transport.id}'>
+            {/if}
+            <div class='row'>
+                <div class='col-6'>
+                    <table class='table table-bordered'></table>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-left"> Dane transportu </h5>
+                            <ul class="list-group text-left">
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Nr transportu</li>
+                                    <li class='list-inline-item float-right'> {$transport.number} </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'>  Kierowca </li>
+                                    <li class='list-inline-item float-right'> {$transport.driver_1} </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Samochód </li>
+                                    <li class='list-inline-item float-right'> {$transport.vehicle}  </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Kilometry rzeczywiste </li>
+                                    <li class='list-inline-item float-right'>   </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Kilometry przejechane </li>
+                                    <li class='list-inline-item float-right'> {$transport.kmprzej}  </li>
+                                </ol>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='col-6'>
+                    <table class='table table-bordered'></table>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-left"> Dane rozładunku </h5>
+                            <ul class="list-group text-left">
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Rozładowane </li>
+                                    <li class='list-inline-item float-right'> {$transport.iloscrozl} </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'>  Warunki </li>
+                                    <li class='list-inline-item float-right'> {$transport.iloscwaru} </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Padłe </li>
+                                    <li class='list-inline-item float-right'> {$transport.iloscpadle} </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Waga </li>
+                                    <li class='list-inline-item float-right'> {$transport.weight}  </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Ubytek  </li>
+                                    <li class='list-inline-item float-right'> 0 </li>
+                                </ol>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {foreach from=$transport.zakupy item=zakup}
+            <div class="row">
+
+                <div class='col-3'>
+                    <table class='table table-bordered'></table>
+                    <div class="card" style='height:100%;'>
+                        <div class="card-body">
+                            <h5 class="card-title text-left"> Dane Załadunku </h5>
+                            <ul class="list-group text-left">
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Nr ubojowy</li>
+                                    <li class='list-inline-item float-right'> {$zakup.numer_ubojowy} </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item'> Sztuki planowane </li>
+                                    <li class='list-inline-item float-right'> {$zakup.amount} </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Sztuki załadowane </li>
+                                    <li class='list-inline-item float-right'> {$zakup.sztukzal} </li>
+                                </ol>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='col-3'>
+                    <table class='table table-bordered'></table>
+                    <div class="card" style='height:100%;'>
+                        <div class="card-body">
+                            <h5 class="card-title text-left"> Wagi z załadunku </h5>
+                            <ul class="list-group text-left">
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Waga </li>
+                                    <li class='list-inline-item float-right'> {$zakup.weight}  </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item'> Śr waga sztuki </li>
+                                    <li class='list-inline-item float-right'>{$zakup.avgWeight} </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item'> Waga WBC / żywa </li>
+                                    <li class='list-inline-item float-right'>  {$zakup.kosztMiesa}  </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item'> % </li>
+                                    <li class='list-inline-item float-right'>  {$zakup.deduction}%  </li>
+                                </ol>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>   
+                <!--endcol-->
+
+                <div class='col-3'>
+                <table class='table table-bordered'></table>
+                        <div class="card" style='height:100%;'>
+                        <div class="card-body">
+                            <h5 class="card-title text-left"> Cena / Koszty </h5>
+                            <ul class="list-group text-left">
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item text-left'> Cena </li>
+                                    <li class='list-inline-item float-right'> {$zakup.price}  </li>
+                                </ol>
+                                <ol class="list-group-item">
+                                    <li class='list-inline-item'> Koszty transportu</li>
+                                    <li class='list-inline-item float-right'>  {$zakup.koszty} </li>
+                                </ol>
+                            </ul>
+                        </div>
+                    </div>
+                </div>  
+                
+                <div class='col-3'>
+                    <table class='table table-bordered'></table>
+                        <div class="card" style='height:100%;'>
+                            <div class="card-body">
+                                <h5 class="card-title text-left">Dane Klienta</h5>
+                                <ul class="list-group text-left">
+                                    <ol class="list-group-item">
+                                        <li class='list-inline-item text-left'> Klient </li>
+                                        <li class='list-inline-item float-right'> {$zakup.client} </li>
+                                    </ol>
+                                    <ol class="list-group-item">
+                                        <li class='list-inline-item'> Grupa </li>
+                                        <li class='list-inline-item float-right'> {$zakup.grupa}  </li>
+                                    </ol>
+                                    <ol class="list-group-item">
+                                        <li class='list-inline-item'> Nr tel </li>
+                                        <li class='list-inline-item float-right'> {$zakup.kontakt} </li>
+                                    </ol>
+                                    <ol class="list-group-item">
+                                        <li class='list-inline-item'> Adres </li>
+                                        <li class='list-inline-item float-right'> {$zakup.address}   </li>
+                                    </ol>
+                                    <ol class="list-group-item">
+                                        <li class='list-inline-item'> Opiekun </li>
+                                        <li class='list-inline-item float-right'>  {$zakup.opiekun} </li>
+                                    </ol>
+
+                                </ul>
+                            </div>
+                        </div>
+                </div>  
+            </div>
+            {/foreach}
+        </div>
+        {/foreach}
+        <!-- div BLOCK -->
     </div>
-
 </div>
-
-
-
